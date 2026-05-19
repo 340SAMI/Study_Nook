@@ -7,22 +7,19 @@ import UserMenu from "./UserMenu";
 import AuthButtons from "./AuthButtons";
 import MobileMenu from "./MobileMenu";
 import { PUBLIC_LINKS, PRIVATE_LINKS } from "./constants";
-
-// Replace with your actual auth context/hook
-// import { useAuth } from "@/context/AuthContext";
+import { useSession, signOut } from "@/lib/auth-client";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { data: session } = useSession();
+  const user = session?.user ?? session ?? null;
 
-  // Replace with real auth state
-  // const { user, logout } = useAuth();
-  const user = null;
-  const logout = () => {};
+  const logout = async () => {
+    await signOut();
+  };
 
-  const navLinks = user
-    ? [...PUBLIC_LINKS, ...PRIVATE_LINKS]
-    : [...PUBLIC_LINKS, ...PRIVATE_LINKS];
+  const navLinks = user ? [...PUBLIC_LINKS, ...PRIVATE_LINKS] : [...PUBLIC_LINKS];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);

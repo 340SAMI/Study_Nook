@@ -3,25 +3,60 @@
 import React from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const Regpage = () => {
+  const router = useRouter();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
-  const onSubmit = (data) => console.log(data);
+
+  const  onSubmit = async (data) =>{
+
+   const {name, email, photoURL, password }= data;
+
+   const res = await fetch("http://localhost:5000/register", { 
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+
+   })
+   const api = await res.json()
+   console.log(api);
+
+
+   const { data:authdata, error } = await authClient.signUp.email({
+    name: name , // required 
+    email: email,
+    password: password,
+    image: photoURL,
+});    
+
+console.log(authdata, error) 
+
+if(authdata){
+  router.push("/authentication/login");
+}else if (error) {
+  alert(error.message);
+}
+
+  } ;
 
   return (
     <div className="bg-[#0A0B0F] relative overflow-hidden min-h-screen flex items-center justify-center p-6">
 
-              <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#6C8EFF]/[0.06] rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[-2]  w-full h-[10%] bg-[#A78BFA]/[0.06]  blur-3xl " />
+              <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-150 h-100 bg-[#6C8EFF]/6 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-[-2]  w-full h-[10%] bg-[#A78BFA]/6  blur-3xl " />
 
       <div className="relative w-full max-w-lg">
 
         {/* Top accent line */}
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-[#6C8EFF]/60 to-transparent mb-2" />
+        <div className="h-px w-full bg-linear-to-r from-transparent via-[#6C8EFF]/60 to-transparent mb-2" />
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-[#0E1017] border border-white/[0.08] rounded-2xl px-8 py-10 shadow-2xl shadow-black/60 space-y-4"
+          className="bg-[#0E1017] border border-white/8 rounded-2xl px-8 py-10 shadow-2xl shadow-black/60 space-y-4"
         >
           {/* Logo */}
           <div className="flex justify-center mb-2">

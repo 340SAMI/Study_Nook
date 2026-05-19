@@ -43,7 +43,7 @@ export default function MobileMenu({ links, user, onLogout, onClose }) {
           ) : (
             <>
               <Link
-                href="/login"
+                href="/authentication/login"
                 onClick={onClose}
                 className="block px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#9AA0B8] hover:text-[#F0F2FF] hover:bg-[#1A1D26] transition-all font-dm-sans"
               >

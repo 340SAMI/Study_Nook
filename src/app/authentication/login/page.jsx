@@ -3,15 +3,33 @@
 import React from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
-const LoginPage = () => {
+const LoginPage =  () => {
+  const router = useRouter();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const {email, password} = data;
+
+    const { data:authdata, error } = await authClient.signIn.email({
+    email: email, // required
+    password: password, // required
+});
+
+console.log(authdata, error)
+
+if(authdata){
+  router.push("/");
+}else if (error) {
+  alert(error.message);
+}
+  }
 
   return (
     <div className="bg-[#0A0B0F] relative overflow-hidden min-h-screen flex items-center justify-center p-6">
-      <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#6C8EFF]/[0.06] rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 right-0 h-[15%] bg-[#A78BFA]/[0.06] blur-3xl" />
+      <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-150 h-100 bg-[#6C8EFF]/6 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-[15%] bg-[#A78BFA]/6 blur-3xl" />
 
       <div className="relative w-full max-w-lg">
         <div className="h-px w-full bg-gradient-to-r from-transparent via-[#6C8EFF]/60 to-transparent mb-4" />
