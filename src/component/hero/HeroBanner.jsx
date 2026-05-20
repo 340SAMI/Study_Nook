@@ -3,7 +3,7 @@ import StatsBar from "./StatsBar";
 
 export default function HeroBanner() {
   return (
-    <div className="mb-32">    
+    <div className="">    
       <section className="relative overflow-hidden bg-[#0A0B0F] pt-40 pb-28">
 
       {/* Glow */}

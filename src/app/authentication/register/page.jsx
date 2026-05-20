@@ -14,7 +14,7 @@ const Regpage = () => {
 
    const {name, email, photoURL, password }= data;
 
-   const res = await fetch("http://localhost:5000/register", { 
+   const res = await fetch(`${process.env.SERVER_URL}/register`, { 
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,7 +23,7 @@ const Regpage = () => {
 
    })
    const api = await res.json()
-   console.log(api);
+   
 
 
    const { data:authdata, error } = await authClient.signUp.email({
@@ -33,7 +33,7 @@ const Regpage = () => {
     image: photoURL,
 });    
 
-console.log(authdata, error) 
+
 
 if(authdata){
   router.push("/authentication/login");

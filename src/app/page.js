@@ -1,11 +1,12 @@
+import BookNavigation from "@/component/BookNavigation.jsx/BookNavigation";
 import HeroBanner from "@/component/hero/HeroBanner";
 
 const page = () => {
     return (
         <div>
             <div className=' w-screen'>
-                <h1 className="">sdjhsdhfsdkjfsdh</h1>
                 <HeroBanner></HeroBanner>
+                <BookNavigation></BookNavigation>
             </div>
         </div>
     );
