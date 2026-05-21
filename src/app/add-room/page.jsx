@@ -73,7 +73,8 @@ const AddBookpage = () => {
     
     const roomData = {
       ...data,
-      ownerId: id, //  user ID 
+      ownerId: id,
+       createdAt: new Date().toISOString(), 
     };
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/addroom`, {
       method: "POST",
