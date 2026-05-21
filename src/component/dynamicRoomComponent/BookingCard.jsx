@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const TIME_SLOTS = [
   "08:00", "09:00", "10:00", "11:00", "12:00",
@@ -12,6 +13,10 @@ const BookingCard = ({ room }) => {
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("08:00");
   const [endTime, setEndTime] = useState("09:00");
+  const [available, setAvailable] = useState(null);
+  
+
+  const route = useRouter();
 
   const hourlyRate = room?.hourlyRate || 0;
 
@@ -26,11 +31,46 @@ const BookingCard = ({ room }) => {
     (t) => parseInt(t.split(":")[0]) > startHour
   );
 
-  const handleSubmit = () => {
-    // wire up booking logic here later
-    const bookObj = { date, startTime, endTime, totalCost, Status:"Confirmed" }
+  const handleSubmit = async () => {
+
+    const bookObj = { roomId: room._id, date, startTime, endTime, totalCost, Status:"Confirmed" }
     console.log(bookObj);
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bookObj),
+    }); 
+    if (res.ok) {
+      alert("Booking confirmed!");
+      // Optionally reset form or redirect
+    } else {
+      alert("Failed to book. Please try again.");
+    }
+
+  route.push("/my-bookings");
+    setAvailable(false);
+   
   };
+
+// checking data availability
+
+
+
+
+useEffect(() => {
+        const checkAvailability = async ()=>{
+          if(!date || !startTime || !endTime){ return};
+          const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings/check?roomId=${room._id}&date=${date}&startTime=${startTime}&endTime=${endTime}`);
+          const data = await res.json();
+          setAvailable(data.available);
+        };
+
+        checkAvailability();
+}, [date, startTime, endTime, room._id]);
+
+
+
 
   return (
     <div className="lg:sticky lg:top-24 h-fit">
@@ -140,11 +180,16 @@ const BookingCard = ({ room }) => {
             ${totalCost}.00
           </span>
         </div>
-
+            {available === true && (
+              <p className="text-[12px] text-green-400 text-center mb-2">✅ Slot is available</p>
+            )}
+            {available === false && (
+              <p className="text-[12px] text-red-400 text-center mb-2">❌ This slot is already booked</p>
+            )}
         {/* Button */}
         <button
           onClick={handleSubmit}
-          disabled={!date || duration === 0}
+          disabled={!date || duration === 0 || available === false}
           className="w-full bg-[#6C8EFF] hover:bg-[#5B7EFF] disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-[14px] py-3.5 rounded-xl transition-all duration-150 active:scale-[0.98]"
           style={{ fontFamily: "'DM Sans', sans-serif" }}
         >

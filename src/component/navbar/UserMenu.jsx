@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const DROPDOWN_LINKS = [
   { href: "/my-listings", label: "My Listings" },
@@ -13,10 +14,12 @@ function Avatar({ user, size = "sm" }) {
 
   if (user.photoURL) {
     return (
-      <img
+      <Image
         src={user.photoURL}
         alt={user.displayName}
         className={`${dimensions} rounded-full object-cover`}
+        width={32}
+        height={32}
       />
     );
   }

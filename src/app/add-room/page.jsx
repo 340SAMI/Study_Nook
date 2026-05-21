@@ -81,7 +81,7 @@ const AddBookpage = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(roomData),
     });
-    const roomapi = await res.json();
+    
   
     router.push("/my-listings");
 ; 
