@@ -14,69 +14,77 @@ const RoomCard = ({ room }) => {
     amenities = [],
   } = room;
 
-  // limit amenities
   const visibleAmenities = amenities.slice(0, 3);
   const remaining = amenities.length - 3;
 
   return (
-    <div className="bg-[#12141A] border border-white/10 rounded-2xl overflow-hidden hover:border-[#6C8EFF]/40 transition-all duration-200">
+    <div className="group bg-[#0E1017] border border-white/5 rounded-3xl overflow-hidden hover:border-[#6C8EFF]/40 hover:-translate-y-1 transition-all duration-300 hover:shadow-2xl hover:shadow-[#6C8EFF]/10">
+      
+      {/* Image Section */}
+      <div className="relative h-52 bg-[#12141A] overflow-hidden">
+        <CardImage 
+          imageURL={imageURL} 
+          name={name} 
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+        />
+        
+        {/* Capacity Badge */}
+        <div className="absolute top-4 right-4 px-3 py-1 text-xs font-medium bg-black/70 backdrop-blur-md rounded-full border border-white/10">
+          {capacity} seats
+        </div>
 
-      {/* Image */}
-      <div className="w-full h-40 bg-[#0E1017] overflow-hidden">
-        <CardImage imageURL={imageURL} name={name} />
+        {/* Floor Badge */}
+        {floor && (
+          <div className="absolute top-4 left-4 px-3 py-1 text-xs font-medium bg-black/70 backdrop-blur-md rounded-full border border-white/10">
+            Floor {floor}
+          </div>
+        )}
       </div>
 
-      {/* Body */}
-      <div className="p-4 flex flex-col gap-2">
-
-        {/* Name */}
-        <h3 className="text-[#F0F2FF] font-semibold text-[15px]">
+      {/* Content */}
+      <div className="p-6 flex flex-col">
+        <h3 className="text-[#F0F2FF] font-semibold text-lg tracking-tight group-hover:text-[#6C8EFF] transition-colors">
           {name}
         </h3>
 
-        {/* Description */}
-        <p className="text-[#7A82A0] text-[13px] leading-relaxed">
-          {description?.slice(0, 100)}
-          {description?.length > 100 && "..."}
+        <p className="text-[#9AA0B8] text-sm mt-2 line-clamp-3 min-h-[60px]">
+          {description || "A peaceful space perfect for focused study and productivity."}
         </p>
 
-        {/* Meta */}
-        <div className="flex items-center justify-between text-[12px] text-[#9AA0B8] mt-1">
-          <span>Floor {floor}</span>
-          <span>{capacity} people</span>
-        </div>
-
         {/* Price */}
-        <div className="text-[#6C8EFF] font-semibold text-[14px]">
-          ${hourlyRate}/hr
+        <div className="mt-4 flex items-baseline gap-1">
+          <span className="text-[#34D399] text-2xl font-bold">
+            ${hourlyRate}
+          </span>
+          <span className="text-[#5A6080] text-sm">/hour</span>
         </div>
 
         {/* Amenities */}
-        <div className="flex flex-wrap gap-2 mt-2">
-          {visibleAmenities.map((item, i) => (
-            <span
-              key={i}
-              className="text-[11px] px-2 py-1 rounded-full bg-[#0E1017] border border-white/10 text-[#9AA0B8]"
-            >
-              {item}
-            </span>
-          ))}
+        {amenities.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-5">
+            {visibleAmenities.map((item, i) => (
+              <span
+                key={i}
+                className="text-[11px] px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[#9AA0B8]"
+              >
+                {item}
+              </span>
+            ))}
+            {remaining > 0 && (
+              <span className="text-[11px] px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[#9AA0B8]">
+                +{remaining} more
+              </span>
+            )}
+          </div>
+        )}
 
-          {remaining > 0 && (
-            <span className="text-[11px] px-2 py-1 rounded-full bg-[#0E1017] border border-white/10 text-[#9AA0B8]">
-              +{remaining} more
-            </span>
-          )}
-        </div>
-
-        {/* Button */}
+        {/* Action Button */}
         <Link
           href={`/rooms/${_id}`}
-          className="mt-3 text-center bg-[#6C8EFF] hover:bg-[#5B7EFF] text-white text-[13px] py-2 rounded-xl transition"
+          className="mt-6 w-full py-3.5 text-center bg-[#6C8EFF] hover:bg-[#5A7EFF] active:scale-[0.97] transition-all duration-200 font-semibold text-white rounded-2xl text-sm tracking-wide"
         >
-          View Details
+          View Details & Book
         </Link>
-
       </div>
     </div>
   );

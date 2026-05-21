@@ -70,7 +70,7 @@ const AddBookpage = () => {
   }
 
   const onSubmit = async (data) => {
-    
+    console.log(data)
     const roomData = {
       ...data,
       ownerId: id,

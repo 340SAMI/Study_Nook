@@ -9,9 +9,9 @@ const CardImage = ({ imageURL, name }) => {
     <Image
       src={imgSrc}
       alt={name}
-      width={400}
-      height={400}
-      className="w-full h-40 object-cover"
+      width={600}
+      height={600}
+      className="w-full h-60 object-cover"
       onError={() => setImgSrc("/placeholder.jpg")}
     />
   );

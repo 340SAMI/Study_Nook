@@ -15,7 +15,7 @@ const BookingCard = ({ room, sessionId }) => {
   const [endTime, setEndTime] = useState("09:00");
   const [available, setAvailable] = useState(null);
   
-
+const { _id:roomId , name, imageURL} = room;
   const route = useRouter();
 
   const hourlyRate = room?.hourlyRate || 0;
@@ -33,7 +33,7 @@ const BookingCard = ({ room, sessionId }) => {
 
   const handleSubmit = async () => {
 
-    const bookObj = { roomId: room._id, sessionId, date, startTime, endTime, totalCost, Status:"Confirmed" }
+    const bookObj = {name, roomId, imageURL,  sessionId, date, startTime, endTime, totalCost, Status:"Confirmed" }
     console.log(bookObj);
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings`, {
