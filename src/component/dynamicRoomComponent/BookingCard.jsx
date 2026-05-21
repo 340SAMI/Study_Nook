@@ -9,7 +9,7 @@ const TIME_SLOTS = [
   "18:00", "19:00", "20:00",
 ];
 
-const BookingCard = ({ room }) => {
+const BookingCard = ({ room, sessionId }) => {
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("08:00");
   const [endTime, setEndTime] = useState("09:00");
@@ -33,7 +33,7 @@ const BookingCard = ({ room }) => {
 
   const handleSubmit = async () => {
 
-    const bookObj = { roomId: room._id, date, startTime, endTime, totalCost, Status:"Confirmed" }
+    const bookObj = { roomId: room._id, sessionId, date, startTime, endTime, totalCost, Status:"Confirmed" }
     console.log(bookObj);
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings`, {

@@ -1,9 +1,9 @@
 import BookingCard from '@/component/dynamicRoomComponent/BookingCard';
 import OwnerChecker from '@/component/dynamicRoomComponent/OwnerChecker';
-import { authClient } from '@/lib/auth-client';
+import { auth } from '@/lib/auth';
+import { headers } from "next/headers";
 import Image from 'next/image';
 import React from 'react';
-
 const roomfetch = async (id) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${id}`, {
     cache: "no-store",
@@ -12,10 +12,15 @@ const roomfetch = async (id) => {
 };
 
 const Page = async ({ params }) => {
+  
   const { id } = await params;
   const room = await roomfetch(id);
 
+       const session = await auth.api.getSession({
+        headers: await headers()
+    });
 
+    const sessionId = session?.user?.id;
 
 
 
@@ -203,106 +208,7 @@ const Page = async ({ params }) => {
 
           {/* ── RIGHT — Booking Card ── */}
           <div className="lg:sticky lg:top-24 h-fit">
-            <div className="bg-[#0E1017] border border-white/[0.08] rounded-2xl p-6 shadow-2xl shadow-black/40">
-
-              {/* Accent */}
-              <div className="h-px w-full bg-gradient-to-r from-transparent via-[#6C8EFF]/50 to-transparent mb-5" />
-
-              {/* Price */}
-              <div className="flex items-baseline gap-1.5 mb-5">
-                <span
-                  className="text-[32px] font-bold text-[#F0F2FF]"
-                  style={{ fontFamily: "'Syne', sans-serif" }}
-                >
-                  ${room?.hourlyRate || 5}
-                </span>
-                <span className="text-[13px] text-[#5A6080]" style={{ fontFamily: "'DM Sans', sans-serif" }}>/ hour</span>
-              </div>
-
-              {/* Date */}
-              <div className="flex flex-col gap-1.5 mb-3">
-                <label
-                  className="text-[11px] font-medium text-[#7A82A0] uppercase tracking-widest"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                >
-                  Date
-                </label>
-                <input
-                  type="date"
-                  className="bg-[#12141A] border border-white/[0.08] rounded-xl px-4 py-2.5 text-[13px] text-[#F0F2FF] outline-none focus:border-[#6C8EFF]/40 transition-all"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                />
-              </div>
-
-              {/* Time row */}
-              <div className="grid grid-cols-2 gap-3 mb-3">
-                {["Start", "End"].map((label) => (
-                  <div key={label} className="flex flex-col gap-1.5">
-                    <label
-                      className="text-[11px] font-medium text-[#7A82A0] uppercase tracking-widest"
-                      style={{ fontFamily: "'DM Sans', sans-serif" }}
-                    >
-                      {label}
-                    </label>
-                    <select
-                      className="bg-[#12141A] border border-white/[0.08] rounded-xl px-3 py-2.5 text-[13px] text-[#F0F2FF] outline-none focus:border-[#6C8EFF]/40 transition-all appearance-none"
-                      style={{ fontFamily: "'DM Sans', sans-serif" }}
-                    >
-                      {["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00"].map((t) => (
-                        <option key={t}>{t}</option>
-                      ))}
-                    </select>
-                  </div>
-                ))}
-              </div>
-
-              {/* Special note */}
-              <div className="flex flex-col gap-1.5 mb-4">
-                <label
-                  className="text-[11px] font-medium text-[#7A82A0] uppercase tracking-widest"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                >
-                  Note{" "}
-                  <span className="normal-case text-[#3A4060] tracking-normal">(optional)</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="Any special requests…"
-                  className="bg-[#12141A] border border-white/[0.08] rounded-xl px-4 py-2.5 text-[13px] text-[#F0F2FF] placeholder-[#3A4060] outline-none focus:border-[#6C8EFF]/40 transition-all"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                />
-              </div>
-
-              {/* Cost */}
-              <div className="flex items-center justify-between bg-[#6C8EFF]/[0.06] border border-[#6C8EFF]/[0.15] rounded-xl px-4 py-3 mb-4">
-                <span className="text-[12px] text-[#7A82A0]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                  Total cost (2 hrs)
-                </span>
-                <span
-                  className="text-[18px] font-bold text-[#6C8EFF]"
-                  style={{ fontFamily: "'Syne', sans-serif" }}
-                >
-                  ${(room?.hourlyRate || 5) * 2}.00
-                </span>
-              </div>
-
-              {/* Book button */}
-              <button
-                className="w-full bg-[#6C8EFF] hover:bg-[#5B7EFF] text-white font-semibold text-[14px] py-3.5 rounded-xl transition-all duration-150 active:scale-[0.98]"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
-              >
-                Confirm Booking
-              </button>
-
-              <p
-                className="text-center text-[11px] text-[#3A4060] mt-3"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
-              >
-                Free cancellation before the booking date
-              </p>
-
-            </div>
-            <BookingCard room={room}></BookingCard>
+            <BookingCard room={room} sessionId={sessionId}></BookingCard>
           </div>
 
           
