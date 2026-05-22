@@ -4,7 +4,7 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 export default function BookNavigation() {
     const buttonClass = "w-full sm:w-auto inline-flex justify-center items-center gap-2 text-[14px] font-semibold px-5 py-3 rounded-xl transition-all duration-300 border border-[#d6d6d6]/50 bg-transparent text-[#6C8EFF] hover:bg-[#6C8EFF] hover:text-white hover:border-[#6C8EFF] active:scale-[0.97]";
   return (
-    <div className="px-6 py-8 border-2 border-yellow-400 sm:px-12">
+    <div className="px-6 py-8  sm:px-12">
       <div className="w-full sm:w-[75%] mx-auto relative overflow-hidden rounded-2xl border border-[#6C8EFF]/20 bg-[#0E1017] px-6  sm:px-10 py-6 sm:py-9 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
 
         {/* Top accent line */}

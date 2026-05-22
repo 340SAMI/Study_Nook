@@ -39,9 +39,8 @@ const AddBookpage = () => {
             Please log in to add a room
           </h2>
 
-          <div
-              className="p-0.5 rounded-xl bg-size-[200%_auto] bg-gradient-to-r from-transparent via-[#6C8EFF]/60 to-transparent bg-left hover:bg-right transition-allduration-1000 ease-in-out">
-                      <div className="text-[#6C8EFF] hover:text-[#8AABFF] bg-[#0A0B0F] p-2 rounded-xl">
+          <div className="p-0.5 rounded-2xl bg-[size:300%_100%] bg-gradient-to-r from-transparent via-[#6C8EFF] to-transparent bg-left hover:bg-right transition-all duration-1000 ease-in-out group">                      
+            <div className="text-[#6C8EFF] hover:text-[#8AABFF] bg-[#0A0B0F] p-2 rounded-xl">
             <Link
               href="/authentication/login"
               className=" transition-colors"
@@ -185,7 +184,7 @@ const AddBookpage = () => {
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             />
                 {errors.imageURL && (
-                  <p className="text-[12px] text-red-400">{errors.imageURL.message}</p>
+                  <p className="text-[12px] text-red-400">{errors.image.message}</p>
                 )}
           </div>
 

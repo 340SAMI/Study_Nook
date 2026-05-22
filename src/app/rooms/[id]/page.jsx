@@ -5,10 +5,19 @@ import { headers } from "next/headers";
 import Image from 'next/image';
 import React from 'react';
 const roomfetch = async (id) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${id}`, {
-    cache: "no-store",
+  
+  const {token}= await auth.api.getToken({
+    headers : await headers()
   });
+
+ const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${id}`, {
+    cache: "no-store",
+    headers: {
+        authorization: `Bearer ${token}`
+    }
+});
   return res.json();
+
 };
 
 const Page = async ({ params }) => {

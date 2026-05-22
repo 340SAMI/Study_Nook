@@ -2,21 +2,25 @@
 import React from 'react';
 import { FiUsers, FiLayers, FiDollarSign, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import Link from 'next/link';
-import CardImage from '../roomComponents/RoomCard/CardImage';
+import CardImage from '../../roomComponents/RoomCard/CardImage';
 import Image from 'next/image';
+import { AlertDialog, Button } from '@heroui/react';
+import { ListEdit } from '../ListEdit/ListEdit';
 
 
 const ListRoomCard = ({ room }) => {
     const handleDelete = async () => {
-        const confirmed = confirm('Are you sure you want to delete this room?');
-        if (!confirmed) return;
 
-        await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${room._id}`, {
+      const res =  await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/addroom/${room._id}`, {
             method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },    
         });
 
+       const rata = await res.json()
+        console.log(rata);
         window.location.reload();
     };
+   
 
     return (
         <div className="bg-[#0E1017] border border-white/5 rounded-2xl overflow-hidden flex flex-col sm:flex-row hover:border-[#6C8EFF]/30 transition-all duration-300">
@@ -66,24 +70,48 @@ const ListRoomCard = ({ room }) => {
                 </div>
 
                     <div className="flex gap-2 mt-4 pt-4 border-t border-white/5">
-                        <Link
-                            href={`/edit-room/${room._id}`}
-                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white/5 border border-white/10 text-[#9AA0B8] hover:border-[#6C8EFF]/40 hover:text-[#6C8EFF] transition-all"
-                        >
-                            <FiEdit2 size={11} /> Edit
-                        </Link>
-                        <button
-                            onClick={handleDelete}
-                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-all"
-                        >
-                            <FiTrash2 size={11} /> Delete
-                        </button>
+
+
+                 
+                            <ListEdit key={room._id} room={room}></ListEdit>
+                      
+
+
+                        <AlertDialog>
+                            <Button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-all">
+                             Delete Project 
+                            </Button>
+                            
+                        <AlertDialog.Backdrop>
+                            <AlertDialog.Container>
+                                <AlertDialog.Dialog className="sm:max-w-[400px] bg-[#12141A] border border-white/5">
+                                <AlertDialog.CloseTrigger />
+                                <AlertDialog.Header>
+                                <AlertDialog.Icon status="danger" />
+                                <AlertDialog.Heading className="text-[#ffd6d3]">Delete project permanently?</AlertDialog.Heading>
+                                </AlertDialog.Header>
+                                <AlertDialog.Body>
+                                <p>
+                                    This will permanently delete <strong>My Awesome Project</strong> and all of its
+                                    data. This action cannot be undone.
+                                </p>
+                                </AlertDialog.Body>
+                                <AlertDialog.Footer>
+                                <Button slot="close" variant="tertiary">
+                                    Cancel
+                                </Button>
+                                <Button slot="close" variant="danger" onPress={handleDelete}>
+                                    Delete Project
+                                </Button>
+                                </AlertDialog.Footer>
+                            </AlertDialog.Dialog>
+                            </AlertDialog.Container>
+                        </AlertDialog.Backdrop>
+                        </AlertDialog>
                     </div>
 
 
             </div>
-
-            {/* Actions */}
 
         </div>
     );

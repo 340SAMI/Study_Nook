@@ -1,7 +1,7 @@
 import { auth } from '@/lib/auth';
 import Link from 'next/link';
 import { headers } from "next/headers";
-import ListRoomCard from '@/component/ListRoomCard/ListRoomCard';
+import ListRoomCard from '@/component/listComponents/ListRoomCard/ListRoomCard';
 
 async function getAllRooms() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/addroom`, {
