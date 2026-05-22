@@ -19,7 +19,7 @@ const AMENITIES = [
 const AddBookpage = () => {
   const router = useRouter();
   const { data: session } = authClient.useSession();
-  const {id} = session?.user || {};
+  const {id, name} = session?.user || {};
 
 
   const {
@@ -40,21 +40,7 @@ const AddBookpage = () => {
           </h2>
 
           <div
-              className="
-                p-0.5
-                rounded-xl
-                bg-size-[200%_auto]
-                bg-gradient-to-r
-                from-transparent
-                via-[#6C8EFF]/60
-                to-transparent
-                bg-left
-                hover:bg-right
-                transition-all
-                duration-1000
-                ease-in-out
-              "
-            >
+              className="p-0.5 rounded-xl bg-size-[200%_auto] bg-gradient-to-r from-transparent via-[#6C8EFF]/60 to-transparent bg-left hover:bg-right transition-allduration-1000 ease-in-out">
                       <div className="text-[#6C8EFF] hover:text-[#8AABFF] bg-[#0A0B0F] p-2 rounded-xl">
             <Link
               href="/authentication/login"
@@ -70,12 +56,13 @@ const AddBookpage = () => {
   }
 
   const onSubmit = async (data) => {
-    console.log(data)
+  
     const roomData = {
       ...data,
+      userName: name,
       ownerId: id,
        createdAt: new Date().toISOString(), 
-    };
+    };  console.log(roomData)
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/addroom`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -188,10 +175,18 @@ const AddBookpage = () => {
             <input
               type="url"
               placeholder="https://example.com/room.jpg"
-              {...register("imageURL")}
+              {...register("imageURL",{ validate: 
+                                            (val) => {if (!val) return true; 
+                                                        if (val.startsWith('data:')) return 'Please use a hosted image URL, not base64';
+                                                          return true;}
+                                                          })}
+
               className="bg-[#12141A] border border-white/[0.08] rounded-xl px-4 py-3 text-[14px] text-[#F0F2FF] placeholder-[#3A4060] outline-none transition-all duration-150 focus:border-[#6C8EFF]/50 focus:bg-[#13152A]/60"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             />
+                {errors.imageURL && (
+                  <p className="text-[12px] text-red-400">{errors.imageURL.message}</p>
+                )}
           </div>
 
           {/* Divider */}

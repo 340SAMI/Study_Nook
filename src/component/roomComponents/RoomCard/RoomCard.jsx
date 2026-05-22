@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import CardImage from "./CardImage";
+import { FiUsers, FiLayers, FiClock } from "react-icons/fi";
 
 const RoomCard = ({ room }) => {
   const {
@@ -18,72 +18,73 @@ const RoomCard = ({ room }) => {
   const remaining = amenities.length - 3;
 
   return (
-    <div className="group bg-[#0E1017] border border-white/5 rounded-3xl overflow-hidden hover:border-[#6C8EFF]/40 hover:-translate-y-1 transition-all duration-300 hover:shadow-2xl hover:shadow-[#6C8EFF]/10">
-      
-      {/* Image Section */}
-      <div className="relative h-52 bg-[#12141A] overflow-hidden">
-        <CardImage 
-          imageURL={imageURL} 
-          name={name} 
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
-        />
-        
-        {/* Capacity Badge */}
-        <div className="absolute top-4 right-4 px-3 py-1 text-xs font-medium bg-black/70 backdrop-blur-md rounded-full border border-white/10">
-          {capacity} seats
-        </div>
+    <div className="group bg-[#0E1017] border border-white/[0.07] rounded-[20px] overflow-hidden hover:border-[#6C8EFF]/40 hover:-translate-y-1 transition-all duration-300">
 
-        {/* Floor Badge */}
-        {floor && (
-          <div className="absolute top-4 left-4 px-3 py-1 text-xs font-medium bg-black/70 backdrop-blur-md rounded-full border border-white/10">
-            Floor {floor}
-          </div>
-        )}
+      {/* Image */}
+      <div className="relative h-44 bg-[#12141A] overflow-hidden">
+        <CardImage
+          imageURL={imageURL}
+          name={name}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        {/* Price badge overlaid on image */}
+        <div className="absolute top-3 right-3 flex items-baseline gap-1 bg-black/80 border border-white/10 rounded-full px-2.5 py-1">
+          <span className="text-[#34D399] text-[13px] font-semibold">${hourlyRate}</span>
+          <span className="text-[#5A6080] text-[11px]">/hr</span>
+        </div>
       </div>
 
-      {/* Content */}
-      <div className="p-6 flex flex-col">
-        <h3 className="text-[#F0F2FF] font-semibold text-lg tracking-tight group-hover:text-[#6C8EFF] transition-colors">
+      {/* Body */}
+      <div className="p-[18px]">
+        <h3 className="text-[#F0F2FF] font-semibold text-[15px] tracking-tight mb-1.5">
           {name}
         </h3>
-
-        <p className="text-[#9AA0B8] text-sm mt-2 line-clamp-3 min-h-[60px]">
+        <p className="text-[#5A6080] text-xs leading-relaxed line-clamp-2 mb-3.5">
           {description || "A peaceful space perfect for focused study and productivity."}
         </p>
 
-        {/* Price */}
-        <div className="mt-4 flex items-baseline gap-1">
-          <span className="text-[#34D399] text-2xl font-bold">
-            ${hourlyRate}
-          </span>
-          <span className="text-[#5A6080] text-sm">/hour</span>
+        {/* Meta pills */}
+        <div className="flex flex-wrap gap-2 mb-3.5">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-[#9AA0B8] text-[11px]">
+            <FiUsers size={11} className="opacity-70" />
+            {capacity} seats
+          </div>
+          {floor && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-[#9AA0B8] text-[11px]">
+              <FiLayers size={11} className="opacity-70" />
+              Floor {floor}
+            </div>
+          )}
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-[#9AA0B8] text-[11px]">
+            <FiClock size={11} className="opacity-70" />
+            8am – 10pm
+          </div>
         </div>
+
+        <div className="h-px bg-white/5 mb-3.5" />
 
         {/* Amenities */}
         {amenities.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-5">
+          <div className="flex flex-wrap gap-1.5 mb-[18px]">
             {visibleAmenities.map((item, i) => (
-              <span
-                key={i}
-                className="text-[11px] px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[#9AA0B8]"
-              >
+              <span key={i} className="text-[11px] px-2.5 py-1 rounded-full bg-[#6C8EFF]/[0.08] border border-[#6C8EFF]/20 text-[#8AA4FF]">
                 {item}
               </span>
             ))}
             {remaining > 0 && (
-              <span className="text-[11px] px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[#9AA0B8]">
+              <span className="text-[11px] px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-[#5A6080]">
                 +{remaining} more
               </span>
             )}
           </div>
         )}
 
-        {/* Action Button */}
+        {/* CTA */}
         <Link
           href={`/rooms/${_id}`}
-          className="mt-6 w-full py-3.5 text-center bg-[#6C8EFF] hover:bg-[#5A7EFF] active:scale-[0.97] transition-all duration-200 font-semibold text-white rounded-2xl text-sm tracking-wide"
+          className="block w-full py-[11px] text-center bg-[#6C8EFF] hover:bg-[#5A7EFF] active:scale-[0.98] transition-all duration-150 font-semibold text-white rounded-xl text-[13px] tracking-wide"
         >
-          View Details & Book
+          View details &amp; book
         </Link>
       </div>
     </div>

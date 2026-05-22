@@ -16,6 +16,7 @@ const Page = async ({ params }) => {
   const { id } = await params;
   const room = await roomfetch(id);
 
+
        const session = await auth.api.getSession({
         headers: await headers()
     });
@@ -108,7 +109,7 @@ const Page = async ({ params }) => {
             </p>
 
             {/* Meta */}
-            <div className="flex flex-wrap gap-5 mb-6 border-2 border-amber-300">
+            <div className="flex flex-wrap gap-5 mb-6 ">
               {[
                 {
                   icon: (

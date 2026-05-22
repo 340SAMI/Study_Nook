@@ -3,16 +3,15 @@ import Image from "next/image";
 import { useState } from "react";
 
 const CardImage = ({ imageURL, name }) => {
-  const [imgSrc, setImgSrc] = useState(imageURL || "/placeholder.jpg");
 
   return (
     <Image
-      src={imgSrc}
+      src={imageURL || "https://placehold.co/600x400/12141A/5A6080?text=No+Image"}
       alt={name}
       width={600}
       height={600}
       className="w-full h-60 object-cover"
-      onError={() => setImgSrc("/placeholder.jpg")}
+      onError={(e) => {e.target.src="https://placehold.co/600x400/12141A/5A6080?text=No+Image"}}
     />
   );
 };
